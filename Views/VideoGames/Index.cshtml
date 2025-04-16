@@ -1,0 +1,45 @@
+﻿@model IEnumerable<EVideoGameStoreApp.Models.VideoGame>
+
+@{
+    ViewData["Title"] = "Available Video Games";
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title">
+                        @item.Title
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a class="text-white float-end" asp-action="Edit" asp-route-id="@item.Id">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        }
+                    </h5>
+                </div>
+                <img src="@item.CoverImageUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;" />
+                <div class="card-body">
+                    <p class="card-text">@item.Description</p>
+                    <p class="card-text"><strong>Category:</strong> @item.VideoGameCategory</p>
+                    <p class="card-text"><strong>Developer:</strong> @item.Developer?.Name</p>
+                    <p class="card-text"><strong>Publisher:</strong> @item.Publisher?.Name</p>
+                    <p class="card-text"><strong>Release Date:</strong> @item.ReleaseDate.ToString("MMM dd, yyyy")</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="bi bi-eye-fill"></i> Details
+                    </a>
+                    <a class="btn btn-success text-white"
+                       asp-controller="Cart"
+                       asp-action="AddToCart"
+                       asp-route-id="@item.Id">
+                        <i class="bi bi-cart-plus"></i> @item.Price.ToString("C")
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
