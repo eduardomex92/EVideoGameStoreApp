@@ -1,0 +1,114 @@
+﻿@model NewVideoGameVM
+@using EVideoGameStoreApp.Data.Enums;
+
+@{
+	ViewData["Title"] = "Add a New Video Game";
+
+}
+<div class="row">
+	<div class="col-md-8 offset-2">
+		<p>
+			<h4>Add a new video game</h4>
+		</p>
+		<div class="row">
+			<div class="col-md-8 offset-2">
+				@if (!ViewData.ModelState.IsValid)
+				{
+					<div class="alert alert-danger">
+						<strong>Validation errors:</strong>
+						<ul>
+							@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+							{
+								<li>@error.ErrorMessage</li>
+							}
+						</ul>
+					</div>
+				}
+
+
+				<form asp-action="Create">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div asp-validation-summary="All" class="text-danger"></div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label asp-for="Title" class="control-label"></label>
+								<input asp-for="Title" class="form-control" />
+								<span asp-validation-for="Title" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="Price" class="control-label"></label>
+								<input asp-for="Price" class="form-control" type="number" step="0.01" />
+								<span asp-validation-for="Price" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="CoverImageUrl" class="control-label"></label>
+								<input asp-for="CoverImageUrl" class="form-control" />
+								<span asp-validation-for="CoverImageUrl" class="text-danger"></span>
+							</div>
+							
+							<div class="form-group">
+								<label asp-for="ReleaseDate" class="control-label"></label>
+								<input asp-for="ReleaseDate" type="date" class="form-control" />
+								<span asp-validation-for="ReleaseDate" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label asp-for="VideoGameCategories" class="control-label"></label>
+								<select asp-for="VideoGameCategories" class="form-control" asp-items="ViewBag.CategoryList" multiple></select>
+								<span asp-validation-for="VideoGameCategories" class="text-danger"></span>
+
+							</div>
+							<div class="form-group">
+								<label asp-for="DeveloperId" class="control-label"></label>
+								<select asp-for="DeveloperId" class="form-control" asp-items="ViewBag.Developers" >								</select>
+								<span asp-validation-for="DeveloperId" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="PublisherId" class="control-label"></label>
+								<select asp-for="PublisherId" class="form-control" asp-items="ViewBag.Publishers" ></select>
+								<span asp-validation-for="PublisherId" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label asp-for="PlatformIds" class="control-label"></label>
+								<select asp-for="PlatformIds" class="form-control" asp-items="ViewBag.Platforms" multiple></select>
+								<span asp-validation-for="PlatformIds" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label asp-for="Description" class="control-label"></label>
+								<textarea asp-for="Description" class="form-control" rows="4"></textarea>
+								<span asp-validation-for="Description" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 offset-2 text-center">
+						<img id="CoverUrlPreview" class="border-info" style="max-width: 300px" />
+					</div>
+
+					<div class="form-group">
+						<input type="submit" value="Create" class="btn btn-outline-success float-right" />
+						<a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function (){
+			var output = document.getElementById('CoverUrlPreview');
+			output.src = $("#CoverImageUrl").val()
+		});
+		$("#CoverImageUrl").on("change", function(){
+			var output = document.getElementById('CoverUrlPreview');
+			output.src = $(this).val();
+		});
+	</script>
+}
