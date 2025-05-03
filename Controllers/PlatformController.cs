@@ -1,9 +1,12 @@
 ﻿using EVideoGameStoreApp.Data.Services;
 using EVideoGameStoreApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using EVideoGameStoreApp.Data.Static;
 
 namespace EVideoGameStoreApp.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class PlatformController : Controller
     {
         private readonly IPlatformsService _service;
@@ -13,6 +16,7 @@ namespace EVideoGameStoreApp.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var platforms = await _service.GetAllAsync();
@@ -25,7 +29,7 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name, Description, LogoUrl")] Platform platform)
+        public async Task<IActionResult> Create([Bind("Name, Description, LogoUrl, Manufacturer")] Platform platform)
         {
             if (!ModelState.IsValid) return View(platform);
 
@@ -33,6 +37,7 @@ namespace EVideoGameStoreApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var platformDetails = await _service.GetByIdAsync(id);
@@ -50,7 +55,7 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("PlatformId, Name, Description, LogoUrl")] Platform platform)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, LogoUrl, Manufacturer")] Platform platform)
         {
             if (!ModelState.IsValid) return View(platform);
 

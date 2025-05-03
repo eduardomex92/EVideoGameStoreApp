@@ -10,12 +10,16 @@ namespace EVideoGameStoreApp.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Publisher name is required")]
+        [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         [Display(Name = "Publisher Name")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Headquarters is required")]
+        [StringLength(100, ErrorMessage = "Headquarters cannot be longer than 100 characters.")]
         [Display(Name = "Headquarters")]
         public string Headquarters { get; set; }
 
+        [Required(ErrorMessage = "Logo URL is required")]
         [Display(Name = "Logo URL")]
         public string LogoUrl { get; set; }
 

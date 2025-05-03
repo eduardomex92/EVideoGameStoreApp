@@ -1,9 +1,13 @@
 ﻿using EVideoGameStoreApp.Data.Services;
 using EVideoGameStoreApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using EVideoGameStoreApp.Data.Static;
 
 namespace EVideoGameStoreApp.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
+
     public class PublisherController : Controller
     {
         private readonly IPublishersService _service;
@@ -13,6 +17,8 @@ namespace EVideoGameStoreApp.Controllers
             _service = service;
         }
 
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var publishers = await _service.GetAllAsync();
@@ -25,13 +31,15 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name, Country, LogoUrl")] Publisher publisher)
+        public async Task<IActionResult> Create([Bind("Name, Headquarters, LogoUrl")] Publisher publisher)
         {
             if (!ModelState.IsValid) return View(publisher);
 
             await _service.AddAsync(publisher);
             return RedirectToAction(nameof(Index));
         }
+
+
 
         public async Task<IActionResult> Details(int id)
         {
@@ -50,7 +58,7 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("PublisherId, Name, Country, LogoUrl")] Publisher publisher)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Headquarters, LogoUrl")] Publisher publisher)
         {
             if (!ModelState.IsValid) return View(publisher);
 
