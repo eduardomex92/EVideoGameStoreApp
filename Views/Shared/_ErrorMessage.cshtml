@@ -1,0 +1,17 @@
+﻿@if (TempData["Error"] != null)
+{
+	<div class="alert alert-danger text-center">
+		@TempData["Error"]
+	</div>
+
+	<script>
+		setTimeout(function () {
+			const alert = document.querySelector('.alert-danger');
+			if (alert) {
+				alert.style.transition = "opacity 1s ease";
+				alert.style.opacity = 0;
+				setTimeout(() => alert.remove(), 1000);
+			}
+		}, 5000);
+	</script>
+}
