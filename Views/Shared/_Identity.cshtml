@@ -1,4 +1,9 @@
-﻿@inject UserManager<ApplicationUser> UserManager
+﻿@using Microsoft.AspNetCore.Identity
+@using EVideoGameStoreApp.Models
+
+
+
+@inject UserManager<ApplicationUser> UserManager
 
 
 @if (!User.Identity.IsAuthenticated)

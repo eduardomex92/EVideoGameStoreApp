@@ -1,21 +1,22 @@
 ﻿using EVideoGameStoreApp.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EVideoGameStoreApp.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VideoGamePlatform>().HasKey(vgp => new 
-            { 
-                vgp.VideoGameId, 
-                vgp.PlatformId 
+            // VideoGame <-> Platform many-to-many
+            modelBuilder.Entity<VideoGamePlatform>().HasKey(vgp => new
+            {
+                vgp.VideoGameId,
+                vgp.PlatformId
             });
 
             modelBuilder.Entity<VideoGamePlatform>()
@@ -28,8 +29,12 @@ namespace EVideoGameStoreApp.Data
                 .WithMany(p => p.VideoGamePlatforms)
                 .HasForeignKey(vgp => vgp.PlatformId);
 
-            // DeveloperPublisher join table
-            modelBuilder.Entity<DeveloperPublisher>().HasKey(dp => new { dp.DeveloperId, dp.PublisherId });
+            // Developer <-> Publisher many-to-many
+            modelBuilder.Entity<DeveloperPublisher>().HasKey(dp => new
+            {
+                dp.DeveloperId,
+                dp.PublisherId
+            });
 
             modelBuilder.Entity<DeveloperPublisher>()
                 .HasOne(dp => dp.Developer)
@@ -42,16 +47,21 @@ namespace EVideoGameStoreApp.Data
                 .HasForeignKey(dp => dp.PublisherId);
 
             base.OnModelCreating(modelBuilder);
-
         }
 
+        // Entity tables
         public DbSet<VideoGame> VideoGames { get; set; }
         public DbSet<Developer> Developers { get; set; }
-
         public DbSet<Publisher> Publishers { get; set; }
-
         public DbSet<Platform> Platforms { get; set; }
 
+        // Join tables
         public DbSet<VideoGamePlatform> VideoGamePlatforms { get; set; }
+        public DbSet<DeveloperPublisher> DeveloperPublisher { get; set; }
+
+        // Orders and cart
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }

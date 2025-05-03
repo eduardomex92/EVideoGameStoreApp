@@ -22,7 +22,7 @@
                 </div>
                 <img src="@item.CoverImageUrl" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;" />
                 <div class="card-body">
-                    <p class="card-text">@item.Description</p>
+                    <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;">@item.Description</p>
                     <p class="card-text"><strong>Category:</strong> @item.VideoGameCategory</p>
                     <p class="card-text"><strong>Developer:</strong> @item.Developer?.Name</p>
                     <p class="card-text"><strong>Publisher:</strong> @item.Publisher?.Name</p>

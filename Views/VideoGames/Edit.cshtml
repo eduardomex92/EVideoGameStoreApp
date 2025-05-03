@@ -59,6 +59,7 @@
 								<label asp-for="VideoGameCategories" class="control-label"></label>
 								<select asp-for="VideoGameCategories" class="form-control" asp-items="ViewBag.CategoryList" multiple></select>
 								<span asp-validation-for="VideoGameCategories" class="text-danger"></span>
+								<small class="form-text text-muted">Hold Ctrl (or Cmd) to select multiple</small>
 							</div>
 
 							<div class="form-group">
@@ -93,7 +94,7 @@
 					<div class="form-group">
 						<input type="submit" value="Update" class="btn btn-outline-success float-right" />
 						<a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
-
+					</div>
 
 				</form>
 			</div>

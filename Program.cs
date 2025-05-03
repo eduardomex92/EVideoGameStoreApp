@@ -61,6 +61,6 @@ app.MapControllerRoute(
 
 // Seed the database
 AppDbInitializer.Seed(app);
-AppDbInitializer.SeedUserAndRolesAsync(app).Wait();
+AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
 
 app.Run();
