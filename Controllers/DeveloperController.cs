@@ -2,9 +2,12 @@
 using EVideoGameStoreApp.Data.Services;
 using EVideoGameStoreApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using EVideoGameStoreApp.Data.Static; // For UserRoles.Admin
 
 namespace EVideoGameStoreApp.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class DeveloperController : Controller
     {
         private readonly IDevelopersService _service;
@@ -14,6 +17,7 @@ namespace EVideoGameStoreApp.Controllers
                _service = service;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();
@@ -39,6 +43,7 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         //Get: Developer/Details/1
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var developerDetails = await _service.GetByIdAsync(id);
@@ -57,7 +62,7 @@ namespace EVideoGameStoreApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("DeveloperId, Name, Country, Description, LogoUrl")] Developer developer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Country, Description, LogoUrl")] Developer developer)
         {
             if (!ModelState.IsValid)
             {
